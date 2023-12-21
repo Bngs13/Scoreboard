@@ -24,4 +24,15 @@ export class LiveScoreboard {
       this.matches.splice(matchIndex, 1);
     }
   }
+
+  getSummary(): string[] {
+    const sortedMatches = this.matches.sort((a, b) => {
+      const totalScoreDiff = b.getTotalScore() - a.getTotalScore();
+      if (totalScoreDiff !== 0) {
+        return totalScoreDiff;
+      }
+      return this.matches.indexOf(b) - this.matches.indexOf(a);
+    });
+    return sortedMatches.map(match => match.getSummary());
+  }
 }

@@ -18,6 +18,9 @@ const TEST_FINISH_FOR_NON_EXIST_MATCH = "Should not finish a game with an invali
 const TEST_FINISH_FOR_NEGATIVE_MATCH_INDEX = "Should not finish a game with a negative match index";
 const TEST_FINISH_FOR_OUT_MATCH_INDEX = "Should not finish a game with an out-of-bounds match index";
 
+const TEST_GET_SUMMARY: string = "Should get summary of live matches ordered by total score and start time"
+const TEST_GET_SUMMARY_FOR_NON_EXIST_MATCH: string = "Should get summary for an empty scoreboard";
+
 const TESTS_OF_SCOREBOARD: string = "LiveScoreboard";
 
 describe(TESTS_OF_SCOREBOARD, () => {
@@ -120,5 +123,24 @@ describe(TESTS_OF_SCOREBOARD, () => {
     scoreboard.startGame("TeamA", "TeamB");
     scoreboard.finishGame(2);
     expect(scoreboard.matches).toHaveLength(1);
+  });
+
+  //Tests for summary
+  it(TEST_GET_SUMMARY, () => {
+    scoreboard.startGame("TeamA", "TeamB");
+    scoreboard.startGame("TeamC", "TeamD");
+    scoreboard.updateScore(0, 2, 1);
+    scoreboard.updateScore(1, 3, 0);
+    const summary = scoreboard.getSummary();
+    expect(summary).toEqual([
+      "TeamC 3 - 0 TeamD",
+      "TeamA 2 - 1 TeamB"
+    ]);
+  });
+
+  it(TEST_GET_SUMMARY_FOR_NON_EXIST_MATCH, () => {
+    const emptyScoreboard = new LiveScoreboard();
+    const summary = emptyScoreboard.getSummary();
+    expect(summary).toEqual([]);
   });
 });
