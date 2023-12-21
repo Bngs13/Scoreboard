@@ -12,6 +12,12 @@ const TEST_UPDATE_FOR_NON_EXIST_MATCH = "Should not update the score for non-exi
 const TEST_UPDATE_FOR_NEGATIVE_MATCH_INDEX = "Should not update the score with a negative match index";
 const TEST_UPDATE_FOR_OUT_MATCH_INDEX = "Should not update the score with an out-of-bounds match index";
 
+const TEST_FINISH_GAME = "Should finish a game";
+const TEST_FINISH_ONGOING_GAME = "Should not finish the ongoing game";
+const TEST_FINISH_FOR_NON_EXIST_MATCH = "Should not finish a game with an invalid match index";
+const TEST_FINISH_FOR_NEGATIVE_MATCH_INDEX = "Should not finish a game with a negative match index";
+const TEST_FINISH_FOR_OUT_MATCH_INDEX = "Should not finish a game with an out-of-bounds match index";
+
 const TESTS_OF_SCOREBOARD: string = "LiveScoreboard";
 
 describe(TESTS_OF_SCOREBOARD, () => {
@@ -22,7 +28,6 @@ describe(TESTS_OF_SCOREBOARD, () => {
   });
 
   //Tests for starting game
-
   it(TEST_START_GAME, () => {
     scoreboard.startGame("TeamA", "TeamB");
     const match = scoreboard.matches[0];
@@ -86,4 +91,34 @@ describe(TESTS_OF_SCOREBOARD, () => {
     expect(match.getSummary()).toBe("TeamA 0 - 0 TeamB");
   });
 
+  //Tests for finishing game
+  it(TEST_FINISH_GAME, () => {
+    scoreboard.startGame("TeamA", "TeamB");
+    scoreboard.finishGame(0);
+    expect(scoreboard.matches).toHaveLength(0);
+  });
+
+  it(TEST_FINISH_ONGOING_GAME, () => {
+    scoreboard.startGame("TeamA", "TeamB");
+    scoreboard.finishGame(1);
+    expect(scoreboard.matches).toHaveLength(1);
+  });
+
+  it(TEST_FINISH_FOR_NON_EXIST_MATCH, () => {
+    scoreboard.startGame("TeamA", "TeamB");
+    scoreboard.finishGame(1);
+    expect(scoreboard.matches).toHaveLength(1);
+  });
+
+  it(TEST_FINISH_FOR_NEGATIVE_MATCH_INDEX, () => {
+    scoreboard.startGame("TeamA", "TeamB");
+    scoreboard.finishGame(-1);
+    expect(scoreboard.matches).toHaveLength(1);
+  });
+
+  it(TEST_FINISH_FOR_OUT_MATCH_INDEX, () => {
+    scoreboard.startGame("TeamA", "TeamB");
+    scoreboard.finishGame(2);
+    expect(scoreboard.matches).toHaveLength(1);
+  });
 });

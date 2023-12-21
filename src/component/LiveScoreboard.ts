@@ -18,4 +18,10 @@ export class LiveScoreboard {
       this.matches[matchIndex].updateScore(homeScore, awayScore);
     }
   }
+
+  finishGame(matchIndex: number): void {
+    if (isValidMatchIndex(matchIndex, this.matches.length)) {
+      this.matches.splice(matchIndex, 1);
+    }
+  }
 }
