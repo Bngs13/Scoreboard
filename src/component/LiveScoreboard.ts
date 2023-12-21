@@ -12,4 +12,10 @@ export class LiveScoreboard {
       console.error("Please provide non-empty names for both home and away teams");
     }
   }
+
+  updateScore(matchIndex: number, homeScore: number, awayScore: number): void {
+    if (isValidMatchIndex(matchIndex, this.matches.length)) {
+      this.matches[matchIndex].updateScore(homeScore, awayScore);
+    }
+  }
 }
